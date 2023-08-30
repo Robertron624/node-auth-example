@@ -1,4 +1,3 @@
-require('dotenv').config();
 import express from 'express';
 import config from "config"
 import connectToMongo from './utils/connect';

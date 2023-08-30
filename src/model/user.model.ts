@@ -3,7 +3,6 @@ import argon2 from "argon2";
 import { nanoid } from "nanoid";
 import logger from "../utils/logger";
 
-
 @pre<User>("save", async function () {
     if (!this.isModified("password")) {
         return;
