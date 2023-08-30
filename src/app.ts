@@ -10,6 +10,7 @@ app.use(express.json());
 
 app.use(router);
 
+
 const port = config.get("port") ||  3001;
 
 app.listen(port, () => {
