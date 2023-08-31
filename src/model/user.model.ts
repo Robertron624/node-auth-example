@@ -54,7 +54,7 @@ export class User {
     public verificationCode: string;
 
     @prop()
-    public passwordResetCode: string;
+    public passwordResetCode: string | null;
 
     @prop({
         default: false,

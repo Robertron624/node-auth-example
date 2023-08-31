@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreateUserInput, ForgotPasswordInput, VerifyUserInput } from "../schema/user.schema";
+import { CreateUserInput, ForgotPasswordInput, ResetPasswordInput, VerifyUserInput } from "../schema/user.schema";
 import logeer from "../utils/logger";
 import { createUser, findUserByEmail, findUserById } from "../services/user.service";
 import { sendEmail } from "../utils/mutils";
@@ -128,5 +128,29 @@ export async function forgotPasswordHandler(req: Request<{}, {}, ForgotPasswordI
     return res.status(200).json({
         message,
     });
+
+}
+
+export async function resetPasswordHandler(req: Request<ResetPasswordInput["params"], {}, ResetPasswordInput["body"]>, res: Response) {
+
+    const { id, passwordResetCode } = req.params;
+
+    const { password } = req.body;
+
+    const user = await findUserById(id);
+
+    if (!user || !user.passwordResetCode || user.passwordResetCode !== passwordResetCode) {
+        return res.status(400).json({
+            message: "Could not validate password",
+        });
+    }
+
+    user.passwordResetCode = null;
+
+    user.password = password;
+
+    await user.save();
+
+    return res.status(200).send("Password successfully reset");
 
 }
