@@ -25,7 +25,7 @@ export function signJwt(
 
 export function verifyJwt<T>(token: string, keyName: "accessTokenPublicKey" | "refreshTokenPublicKey") : T | null {
 
-    const publicKey = Buffer.from(config.get<string>(keyName), "base64").toString("ascii");
+    const publicKey = config.get<string>(keyName);
 
     try {
 
@@ -34,6 +34,8 @@ export function verifyJwt<T>(token: string, keyName: "accessTokenPublicKey" | "r
         return decoded;
 
     }catch (err) {
+        console.log("err -> ", err)
+
         logger.error("EL ERROR AL VERIFY TOKEN ES -> ", err);
         return null;
     }
